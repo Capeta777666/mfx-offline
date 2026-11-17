@@ -27,11 +27,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Instalar Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Instalar NDK e CMake
+      - name: Instalar NDK e CMake (o Android SDK já vem no servidor)
         run: |
+          SDKM=$(ls -d $ANDROID_HOME/cmdline-tools/*/bin | sort -V | tail -1)
+          export PATH="$SDKM:$PATH"
+          echo "ANDROID_HOME=$ANDROID_HOME"; which sdkmanager
           yes | sdkmanager --licenses > /dev/null || true
           sdkmanager "platforms;android-36" || true
           sdkmanager "build-tools;36.0.0" || true
