@@ -10,7 +10,14 @@
 
     <string name="menu_read">Ler biblioteca</string>
     <string name="menu_new_chat">Nova conversa</string>
-    <string name="menu_model">Escolher modelo de IA (.gguf)</string>
+    <string name="menu_download">Baixar modelo de IA (≈1 GB)</string>
+    <string name="menu_model">Escolher modelo do celular (.gguf)</string>
+    <string name="download_confirm">Vou baixar o modelo Qwen2.5 1.5B (cerca de 1 GB). Use Wi-Fi se puder.\n\nO download continua mesmo se você sair do app e aparece na barra de notificações. Quando terminar, a IA é carregada sozinha.</string>
+    <string name="download_start">Baixar</string>
+    <string name="download_running">O download do modelo já está em andamento.</string>
+    <string name="status_downloading">Baixando modelo de IA… %1$d%%</string>
+    <string name="status_download_paused">Download pausado (aguardando internet)… %1$d%%</string>
+    <string name="download_failed">Falha no download (código %1$d). Verifique a internet e tente de novo em ⋮ › Baixar modelo de IA.</string>
     <string name="menu_library">Escolher biblioteca (.zim)</string>
     <string name="menu_length">Tamanho da resposta</string>
     <string name="menu_help">Como configurar</string>
@@ -21,7 +28,7 @@
         <item>Longa</item>
     </string-array>
 
-    <string name="status_no_model">Nenhum modelo carregado. Toque em ⋮ › Escolher modelo de IA.</string>
+    <string name="status_no_model">Nenhum modelo carregado. Toque em ⋮ › Baixar modelo de IA.</string>
     <string name="status_copying">Copiando modelo para o app… %1$d%%</string>
     <string name="status_loading_model">Carregando o modelo de IA… (pode levar alguns segundos)</string>
     <string name="status_ready">Pronto · %1$s</string>
@@ -40,7 +47,7 @@
     <string name="battery">🔋 %1$d%%</string>
     <string name="source_label">📖 Fonte %1$d: %2$s</string>
 
-    <string name="welcome">Olá! Eu sou o MFX Offline, uma IA que funciona sem internet.\n\nPara começar:\n1. Toque em ⋮ › Escolher modelo de IA (.gguf)\n2. (Opcional) Toque em ⋮ › Escolher biblioteca (.zim) para eu responder com base na Wikipédia ou em guias médicos offline.\n\nDica: segure uma mensagem para copiar.</string>
+    <string name="welcome">Olá! Eu sou o MFX Offline, uma IA que funciona sem internet.\n\nPara começar:\n1. Com internet, toque em ⋮ › Baixar modelo de IA (≈1 GB). Depois disso funciona sem internet.\n2. (Opcional) Toque em ⋮ › Escolher biblioteca (.zim) para eu responder com base na Wikipédia ou em guias médicos offline.\n\nDica: segure uma mensagem para copiar.</string>
 
-    <string name="help_text">1. MODELO DE IA (obrigatório)\nCom internet, baixe um arquivo .gguf pequeno, por exemplo:\n• Qwen2.5-1.5B-Instruct Q4_K_M (≈1 GB, melhor em português)\n• Gemma 3 1B Q4_K_M (≈800 MB, mais leve)\nDepois toque em ⋮ › Escolher modelo de IA e selecione o arquivo.\n\n2. BIBLIOTECA OFFLINE (recomendado)\nBaixe arquivos .zim em library.kiwix.org, por exemplo a Wikipédia em português (versão sem imagens) e o WikiMed. Toque em ⋮ › Escolher biblioteca.\n\n3. ECONOMIZAR BATERIA\nUse respostas curtas e o modo Ler biblioteca (abre o artigo direto, sem usar a IA).\n\nAtenção: a IA pequena pode errar. Para saúde e segurança, confira na fonte e procure ajuda profissional quando possível.</string>
+    <string name="help_text">1. MODELO DE IA (obrigatório)\nCom internet, toque em ⋮ › Baixar modelo de IA. Ele baixa sozinho (≈1 GB) e carrega no final.\nSe já tiver outro arquivo .gguf no celular, use ⋮ › Escolher modelo do celular.\n\n2. BIBLIOTECA OFFLINE (recomendado)\nBaixe arquivos .zim em library.kiwix.org, por exemplo a Wikipédia em português (versão sem imagens) e o WikiMed. Toque em ⋮ › Escolher biblioteca.\n\n3. ECONOMIZAR BATERIA\nUse respostas curtas e o modo Ler biblioteca (abre o artigo direto, sem usar a IA).\n\nAtenção: a IA pequena pode errar. Para saúde e segurança, confira na fonte e procure ajuda profissional quando possível.</string>
 </resources>

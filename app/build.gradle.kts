@@ -11,17 +11,28 @@ android {
         applicationId = "com.mfx.offline"
         minSdk = 33
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         ndk {
             abiFilters += listOf("arm64-v8a")
         }
     }
 
+    // Chave fixa: assim cada APK novo instala por cima do anterior (sem desinstalar)
+    signingConfigs {
+        create("mfx") {
+            storeFile = file("mfx-offline.jks")
+            storePassword = "mfxoffline"
+            keyAlias = "mfx"
+            keyPassword = "mfxoffline"
+        }
+    }
+
     buildTypes {
         debug {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("mfx")
         }
         release {
             isMinifyEnabled = false

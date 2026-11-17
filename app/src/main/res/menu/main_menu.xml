@@ -5,6 +5,7 @@
         android:icon="@drawable/ic_book" app:showAsAction="ifRoom" />
     <item android:id="@+id/action_new_chat" android:title="@string/menu_new_chat"
         android:icon="@drawable/ic_add" app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_download" android:title="@string/menu_download" app:showAsAction="never" />
     <item android:id="@+id/action_model" android:title="@string/menu_model" app:showAsAction="never" />
     <item android:id="@+id/action_library" android:title="@string/menu_library" app:showAsAction="never" />
     <item android:id="@+id/action_length" android:title="@string/menu_length" app:showAsAction="never" />

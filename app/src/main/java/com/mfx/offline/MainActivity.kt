@@ -1,5 +1,6 @@
 package com.mfx.offline
 
+import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -31,6 +32,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -134,6 +136,10 @@ class MainActivity : AppCompatActivity() {
         val zim = prefs.zimUri
         if (zim != null && !ZimLibrary.isOpen) openZim(Uri.parse(zim), remember = false)
 
+        if (prefs.downloadId >= 0) {
+            watchDownload(prefs.downloadId)
+            return
+        }
         val path = prefs.modelPath
         if (path != null && File(path).exists()) {
             loadModel(path)
@@ -165,6 +171,65 @@ class MainActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 busyLoading = false
                 setStatus(getString(R.string.status_error, e.message ?: "erro"))
+            }
+        }
+    }
+
+    // ---------- Download do modelo pelo app ----------
+
+    private var downloadJob: Job? = null
+
+    private fun askDownload() {
+        if (prefs.downloadId >= 0) {
+            toast(getString(R.string.download_running))
+            return
+        }
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.menu_download)
+            .setMessage(R.string.download_confirm)
+            .setPositiveButton(R.string.download_start) { _, _ ->
+                try {
+                    val id = ModelDownloader.start(this)
+                    prefs.downloadId = id
+                    watchDownload(id)
+                } catch (e: Exception) {
+                    setStatus(getString(R.string.status_error, e.message ?: "erro"))
+                }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun watchDownload(id: Long) {
+        downloadJob?.cancel()
+        downloadJob = lifecycleScope.launch {
+            while (true) {
+                val st = withContext(Dispatchers.IO) { ModelDownloader.status(this@MainActivity, id) }
+                if (st == null) {
+                    prefs.downloadId = -1
+                    setStatus(getString(R.string.download_failed, -1))
+                    break
+                }
+                when (st.state) {
+                    DownloadManager.STATUS_SUCCESSFUL -> {
+                        prefs.downloadId = -1
+                        val path = ModelDownloader.target(this@MainActivity).absolutePath
+                        prefs.modelPath = path
+                        loadModel(path)
+                        break
+                    }
+                    DownloadManager.STATUS_FAILED -> {
+                        prefs.downloadId = -1
+                        ModelDownloader.cancel(this@MainActivity, id)
+                        setStatus(getString(R.string.download_failed, st.reason))
+                        break
+                    }
+                    DownloadManager.STATUS_PAUSED ->
+                        setStatus(getString(R.string.status_download_paused, maxOf(st.percent, 0)))
+                    else ->
+                        setStatus(getString(R.string.status_downloading, maxOf(st.percent, 0)))
+                }
+                delay(1000)
             }
         }
     }
@@ -336,6 +401,7 @@ class MainActivity : AppCompatActivity() {
                 else toast(getString(R.string.no_library_yet))
             }
             R.id.action_new_chat -> newConversation()
+            R.id.action_download -> askDownload()
             R.id.action_model -> pickModel.launch(arrayOf("*/*"))
             R.id.action_library -> pickZim.launch(arrayOf("*/*"))
             R.id.action_length -> chooseLength()

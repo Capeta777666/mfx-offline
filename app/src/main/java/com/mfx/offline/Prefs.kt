@@ -14,6 +14,11 @@ class Prefs(context: Context) {
         get() = sp.getString("zim_uri", null)
         set(v) = sp.edit().putString("zim_uri", v).apply()
 
+    /** Download do modelo em andamento (-1 = nenhum). */
+    var downloadId: Long
+        get() = sp.getLong("download_id", -1L)
+        set(v) = sp.edit().putLong("download_id", v).apply()
+
     var useLibrary: Boolean
         get() = sp.getBoolean("use_library", true)
         set(v) = sp.edit().putBoolean("use_library", v).apply()
