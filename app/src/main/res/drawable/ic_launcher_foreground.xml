@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <!-- balão de conversa -->
+    <path android:fillColor="#FF8A3D"
+        android:pathData="M34,32h40a8,8 0,0 1,8 8v22a8,8 0,0 1,-8 8H52l-12,10v-10h-6a8,8 0,0 1,-8 -8V40a8,8 0,0 1,8 -8z" />
+    <!-- raio (energia) cortado = offline -->
+    <path android:fillColor="#0E1116"
+        android:pathData="M57,38l-12,15h8l-4,13 13,-17h-8l4,-11z" />
+</vector>

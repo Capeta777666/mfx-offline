@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MFX Offline</string>
+    <string name="input_hint">Pergunte qualquer coisa…</string>
+    <string name="send">Enviar</string>
+    <string name="stop">Parar</string>
+    <string name="use_library">Usar biblioteca offline</string>
+    <string name="search_hint">Pesquisar na biblioteca…</string>
+    <string name="search_empty">Digite acima o que você procura (ex.: queimadura, purificar água, fratura).</string>
+
+    <string name="menu_read">Ler biblioteca</string>
+    <string name="menu_new_chat">Nova conversa</string>
+    <string name="menu_model">Escolher modelo de IA (.gguf)</string>
+    <string name="menu_library">Escolher biblioteca (.zim)</string>
+    <string name="menu_length">Tamanho da resposta</string>
+    <string name="menu_help">Como configurar</string>
+
+    <string-array name="length_options">
+        <item>Curta (mais rápida, economiza bateria)</item>
+        <item>Média (recomendado)</item>
+        <item>Longa</item>
+    </string-array>
+
+    <string name="status_no_model">Nenhum modelo carregado. Toque em ⋮ › Escolher modelo de IA.</string>
+    <string name="status_copying">Copiando modelo para o app… %1$d%%</string>
+    <string name="status_loading_model">Carregando o modelo de IA… (pode levar alguns segundos)</string>
+    <string name="status_ready">Pronto · %1$s</string>
+    <string name="status_model_error">Não consegui carregar o modelo: %1$s</string>
+    <string name="status_error">Erro: %1$s</string>
+    <string name="status_searching">Pesquisando na biblioteca offline…</string>
+    <string name="status_thinking">Pensando…</string>
+    <string name="status_done">Pronto</string>
+    <string name="status_stopped">Resposta interrompida</string>
+    <string name="wait_loading">Aguarde, o modelo ainda está carregando.</string>
+    <string name="answer_failed">Não consegui responder agora. Tente de novo.</string>
+    <string name="answer_empty">(sem resposta)</string>
+    <string name="no_library_yet">Nenhuma biblioteca escolhida. Toque em ⋮ › Escolher biblioteca (.zim).</string>
+    <string name="library_opened">Biblioteca aberta: %1$s</string>
+    <string name="copied">Mensagem copiada</string>
+    <string name="battery">🔋 %1$d%%</string>
+    <string name="source_label">📖 Fonte %1$d: %2$s</string>
+
+    <string name="welcome">Olá! Eu sou o MFX Offline, uma IA que funciona sem internet.\n\nPara começar:\n1. Toque em ⋮ › Escolher modelo de IA (.gguf)\n2. (Opcional) Toque em ⋮ › Escolher biblioteca (.zim) para eu responder com base na Wikipédia ou em guias médicos offline.\n\nDica: segure uma mensagem para copiar.</string>
+
+    <string name="help_text">1. MODELO DE IA (obrigatório)\nCom internet, baixe um arquivo .gguf pequeno, por exemplo:\n• Qwen2.5-1.5B-Instruct Q4_K_M (≈1 GB, melhor em português)\n• Gemma 3 1B Q4_K_M (≈800 MB, mais leve)\nDepois toque em ⋮ › Escolher modelo de IA e selecione o arquivo.\n\n2. BIBLIOTECA OFFLINE (recomendado)\nBaixe arquivos .zim em library.kiwix.org, por exemplo a Wikipédia em português (versão sem imagens) e o WikiMed. Toque em ⋮ › Escolher biblioteca.\n\n3. ECONOMIZAR BATERIA\nUse respostas curtas e o modo Ler biblioteca (abre o artigo direto, sem usar a IA).\n\nAtenção: a IA pequena pode errar. Para saúde e segurança, confira na fonte e procure ajuda profissional quando possível.</string>
+</resources>

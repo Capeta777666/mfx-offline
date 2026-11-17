@@ -1,0 +1,81 @@
+name: Compilar APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Versão fixa do llama.cpp (motor de IA) usada para compilar
+  LLAMA_CPP_COMMIT: 9581154a2250cc9e6948e4c2a2fc4b4e19d1a57e
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Baixar este projeto
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instalar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar NDK e CMake
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-36" || true
+          sdkmanager "build-tools;36.0.0" || true
+          sdkmanager "ndk;29.0.13113456" || true
+          sdkmanager "cmake;3.31.6" || true
+
+      - name: Baixar o motor llama.cpp
+        run: |
+          mkdir llama.cpp && cd llama.cpp
+          git init -q
+          git remote add origin https://github.com/ggml-org/llama.cpp.git
+          git fetch -q --depth 1 origin "$LLAMA_CPP_COMMIT"
+          git checkout -q FETCH_HEAD
+
+      - name: Encaixar o app MFX Offline no projeto Android do llama.cpp
+        run: |
+          ANDROID_DIR=llama.cpp/examples/llama.android
+          rm -rf "$ANDROID_DIR/app"
+          cp -r app "$ANDROID_DIR/app"
+          # Contexto menor = menos RAM (celular com 4 GB)
+          sed -i 's/DEFAULT_CONTEXT_SIZE    = 8192/DEFAULT_CONTEXT_SIZE    = 4096/' "$ANDROID_DIR/lib/src/main/cpp/ai_chat.cpp"
+          grep -n "DEFAULT_CONTEXT_SIZE    =" "$ANDROID_DIR/lib/src/main/cpp/ai_chat.cpp"
+          chmod +x "$ANDROID_DIR/gradlew"
+
+      - name: Compilar APK
+        working-directory: llama.cpp/examples/llama.android
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Renomear APK
+        run: |
+          cp llama.cpp/examples/llama.android/app/build/outputs/apk/debug/app-debug.apk MFX-Offline.apk
+          ls -lh MFX-Offline.apk
+
+      - name: Guardar APK nos artefatos
+        uses: actions/upload-artifact@v4
+        with:
+          name: MFX-Offline-apk
+          path: MFX-Offline.apk
+
+      - name: Publicar APK em Releases (download fácil pelo celular)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: MFX Offline ${{ github.run_number }}
+          body: Baixe o arquivo MFX-Offline.apk abaixo e instale no celular.
+          files: MFX-Offline.apk
+          make_latest: true

@@ -1,0 +1,2 @@
+-keep class org.kiwix.** { *; }
+-keep class com.arm.aichat.** { *; }
