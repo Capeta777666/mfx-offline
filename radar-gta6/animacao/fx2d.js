@@ -112,7 +112,7 @@ function tag(t, a, b, texto, x, y, o = {}) {
   const u = t - a, esc = easeOutBack(u / 0.35) * (o.saida !== false && t > b - 0.2 ? 1 - prog(t, b - 0.2, b) : 1);
   const tam = o.tam || 56, cor = o.cor || PAL.rosa, txt = o.txtCor || '#fff';
   ctx.save(); ctx.translate(x, y); ctx.rotate(o.rot ?? -0.05); ctx.scale(esc, esc);
-  ctx.font = `900 ${tam}px "DejaVu Sans", sans-serif`; const w = ctx.measureText(texto).width + tam * 0.9, h = tam * 1.45;
+  ctx.font = `900 ${tam}px Montserrat, sans-serif`; const w = ctx.measureText(texto).width + tam * 0.9, h = tam * 1.45;
   ctx.fillStyle = 'rgba(0,0,0,0.35)'; ret(-w / 2 + 8, -h / 2 + 10, w, h, h * 0.22); ctx.fill();
   ctx.fillStyle = cor; ret(-w / 2, -h / 2, w, h, h * 0.22); ctx.fill();
   ctx.lineWidth = 6; ctx.strokeStyle = '#fff'; ctx.stroke();
@@ -130,9 +130,9 @@ function credito(t, a, b, nome, funcao, y = 1300) {
   const g = ctx.createLinearGradient(0, y - 90, 0, y + 70); g.addColorStop(0, 'rgba(11,2,24,0)'); g.addColorStop(0.5, 'rgba(11,2,24,0.55)'); g.addColorStop(1, 'rgba(11,2,24,0)');
   ctx.fillStyle = g; ctx.fillRect(0, y - 90, W, 160);
   ctx.fillStyle = PAL.rosa; ctx.fillRect(x, y - 52, 360 * u, 6); ctx.fillStyle = PAL.ciano; ctx.fillRect(x, y - 40, 180 * u, 3);
-  ctx.font = '600 38px "DejaVu Sans", sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.88)'; ctx.textBaseline = 'top';
+  ctx.font = '700 40px Montserrat, sans-serif'; ctx.letterSpacing = '7px'; ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.textBaseline = 'top';
   ctx.save(); ctx.beginPath(); ctx.rect(x, y - 30, 900 * u, 120); ctx.clip();
-  ctx.fillText(funcao.toUpperCase().split('').join(' '), x, y - 10); ctx.restore();
+  ctx.fillText(funcao.toUpperCase(), x, y - 14); ctx.restore(); ctx.letterSpacing = '0px';
   ctx.restore();
 }
 
@@ -187,7 +187,7 @@ function equalizador(t, a, b, y = 1880, cor = PAL.ciano) {
 }
 
 function notas(t, a, b) {
-  if (!dentro(t, a, b)) return; ctx.save(); ctx.font = '900 110px "DejaVu Sans", sans-serif'; ctx.textAlign = 'center';
+  if (!dentro(t, a, b)) return; ctx.save(); ctx.font = '900 110px Montserrat, sans-serif'; ctx.textAlign = 'center';
   for (let i = 0; i < 7; i++) { const f = ((t - a) * 0.35 + i / 7) % 1, x = W * (0.12 + 0.76 * ((i * 0.37) % 1)) + 40 * Math.sin(t * 2 + i), y = H * (0.95 - 0.7 * f);
     ctx.globalAlpha = Math.sin(f * Math.PI); ctx.fillStyle = i % 2 ? PAL.ciano : PAL.rosa; ctx.fillText(i % 3 ? '♪' : '♫', x, y); }
   ctx.restore();

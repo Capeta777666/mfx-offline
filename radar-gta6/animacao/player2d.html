@@ -1,5 +1,10 @@
 <!doctype html><meta charset=utf-8>
 <body style="margin:0;background:#000">
+<style>
+@font-face { font-family: 'Montserrat'; font-weight: 600; src: url('../assets/fontes/Montserrat-600.ttf'); }
+@font-face { font-family: 'Montserrat'; font-weight: 700; src: url('../assets/fontes/Montserrat-700.ttf'); }
+@font-face { font-family: 'Montserrat'; font-weight: 900; src: url('../assets/fontes/Montserrat-900.ttf'); }
+</style>
 <canvas id=c width=1080 height=1920></canvas>
 <script src=../assets/personagens/recortes/meta.js></script>
 <script src=fx2d.js></script>
@@ -10,13 +15,14 @@ const esc = +(q.get('w') || 1080) / 1080; cv.width = Math.round(1080 * esc); cv.
 const g = cv.getContext('2d'); setCtx(g); let atual = null;
 window.pronto = new Promise((ok, falha) => {
   const s = document.createElement('script'); s.src = 'videos2d/' + q.get('v') + '.js'; s.onerror = () => falha('vídeo não encontrado');
-  s.onload = () => carregar(VIDEO.imagens).then(ok, falha); document.body.appendChild(s);
+  s.onload = () => Promise.all([carregar(VIDEO.imagens), document.fonts.load('900 40px Montserrat'), document.fonts.load('600 40px Montserrat'), document.fonts.load('700 40px Montserrat')]).then(ok, falha); document.body.appendChild(s);
 });
 window.cenas = () => VIDEO.cenas.map((c) => ({ nome: c.nome, dur: c.dur }));
-window.preparar = (i) => { atual = VIDEO.cenas[i]; return true; };
+let fator = 1; // tempo da cena original / tempo novo (cena esticada ou encolhida pra caber na narração)
+window.preparar = (i, dur) => { atual = VIDEO.cenas[i]; fator = dur ? atual.dur / dur : 1; return document.fonts.ready.then(() => true); };
 window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => {
   g.setTransform(esc, 0, 0, esc, 0, 0); g.fillStyle = '#0B0218'; g.fillRect(0, 0, 1080, 1920);
-  g.save(); atual.desenhar(t); g.restore();
+  g.save(); atual.desenhar(t * fator); g.restore();
   return cv.toDataURL(fmt, qual);
 };
 </script>

@@ -15,12 +15,12 @@ const CENAS = [
   { nome: 'lucia', dur: 7, desenhar(t) {
     parallax(t, 0, 3.8, 'lucia', { foco: [0.5, 0.36], sobe: 60 });
     fundo(t, 3.8, 7, 'lucia_ss2', { foco: [0.5, 0.55], zoom: [1.05, 1.2] });
-    grade(t); credito(t, 0.5, 3.7, '', 'Lucia Caminos • protagonista', 600); flash(t, 3.8, 0.25);
+    grade(t); credito(t, 0.5, 3.7, '', 'protagonista', 600); flash(t, 3.8, 0.25);
   } },
   { nome: 'jason', dur: 7, desenhar(t) {
     parallax(t, 0, 3.8, 'jason', { foco: [0.5, 0.33], sobe: 60 });
     fundo(t, 3.8, 7, 'keys1', { foco: [0.55, 0.5], zoom: [1.2, 1.02] });
-    grade(t); credito(t, 0.5, 3.7, '', 'Jason Duval • protagonista', 600);
+    grade(t); credito(t, 0.5, 3.7, '', 'protagonista', 600);
     credito(t, 4.2, 7, '', 'Leonida Keys', 600); flash(t, 3.8, 0.25);
   } },
   { nome: 'dupla', dur: 4, desenhar(t) {
@@ -34,28 +34,28 @@ const CENAS = [
   { nome: 'cal', dur: 7, desenhar(t) {
     parallax(t, 0, 3.6, 'cal', { foco: [0.5, 0.36], sobe: 60 });
     fundo(t, 3.6, 7, 'cal_ss4', { foco: [0.76, 0.4], zoom: [1.0, 1.2] });
-    grade(t); credito(t, 0.5, 3.5, '', 'Cal Hampton • amigo do Jason', 600); flash(t, 3.6, 0.25);
+    grade(t); credito(t, 0.5, 3.5, '', 'amigo do Jason', 600); flash(t, 3.6, 0.25);
   } },
   { nome: 'brian', dur: 6, desenhar(t) {
     parallax(t, 0, 3.2, 'brian', { foco: [0.5, 0.36], sobe: 60 });
     fundo(t, 3.2, 6, 'keys3', { foco: [0.4, 0.5], zoom: [1.0, 1.15] });
-    grade(t); credito(t, 0.5, 3.1, '', 'Brian Heder • Leonida Keys', 600); flash(t, 3.2, 0.25);
+    grade(t); credito(t, 0.5, 3.1, '', 'Leonida Keys', 600); flash(t, 3.2, 0.25);
   } },
   { nome: 'boobie-drequan', dur: 7, desenhar(t) {
     parallax(t, 0, 2.4, 'boobie', { foco: [0.48, 0.36], sobe: 40 });
     parallax(t, 2.4, 4.8, 'drequan', { foco: [0.5, 0.36], sobe: 40 });
     fundo(t, 4.8, 7, 'boobie_ss3', { foco: [0.3, 0.45], foco2: [0.81, 0.45], zoom: [1.05, 1.12], desce: 380 });
-    grade(t); credito(t, 0.4, 2.35, '', 'Boobie Ike • lenda de Vice City', 600);
-    credito(t, 2.7, 4.75, '', "Dre'Quan Priest • música", 600); flash(t, 2.4, 0.2); flash(t, 4.8, 0.2);
+    grade(t); credito(t, 0.4, 2.35, '', 'lenda de Vice City', 600);
+    credito(t, 2.7, 4.75, '', "música", 600); flash(t, 2.4, 0.2); flash(t, 4.8, 0.2);
   } },
   { nome: 'real-dimez', dur: 6, desenhar(t) {
     fundo(t, 0, 3.4, 'realdimez_ss4', { foco: [0.3, 0.45], foco2: [0.68, 0.45], zoom: [1.05, 1.12] });
     fundo(t, 3.4, 6, 'real_orig', { foco: [0.45, 0.42], zoom: [1.1, 1.3] });
-    grade(t); credito(t, 0.4, 3.3, '', 'Real Dimez • dupla de rap', 600); flash(t, 3.4, 0.25);
+    grade(t); credito(t, 0.4, 3.3, '', 'dupla de rap', 600); flash(t, 3.4, 0.25);
   } },
   { nome: 'raul', dur: 5, desenhar(t) {
     parallax(t, 0, 5, 'raul', { foco: [0.5, 0.35], sobe: 80, zf1: 1.24 });
-    grade(t); credito(t, 0.5, 5, '', 'Raul Bautista • grandes golpes', 600);
+    grade(t); credito(t, 0.5, 5, '', 'grandes golpes', 600);
   } },
   { nome: 'cta', dur: 9, desenhar(t) {
     fundo(t, 0, 9, 'vc_noite', { foco: [0.5, 0.5], zoom: [1.3, 1.05] });

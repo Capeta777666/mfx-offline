@@ -30,11 +30,18 @@ const [W, H] = rapido ? [540, 960] : [1080, 1920];
   await pg.evaluate(() => window.pronto);
   if (erros.length) throw new Error(erros.join('\n'));
   const cenas = await pg.evaluate(() => window.cenas());
+  // se existir narração gerada (scripts/narrar.py), cada cena dura o mesmo que a sua fala
+  const arqDur = path.join(RAIZ, 'assets', 'audio', 'narracao', video + '.json');
+  if (fs.existsSync(arqDur) && !args.includes('--duracao-original')) {
+    const d = JSON.parse(fs.readFileSync(arqDur, 'utf8')).duracoes;
+    if (d.length === cenas.length) { cenas.forEach((c, i) => { c.durOrig = c.dur; c.dur = d[i]; }); console.log('Durações das cenas ajustadas à narração (' + path.relative(RAIZ, arqDur) + ')'); }
+    else console.log(`⚠ ${path.relative(RAIZ, arqDur)} tem ${d.length} durações, o vídeo tem ${cenas.length} cenas — usando as originais`);
+  }
   const pasta = path.join(RAIZ, 'assets', 'clipes', video); fs.mkdirSync(pasta, { recursive: true });
 
   if (foto) {
     const i = +foto - 1, t = +(args[args.indexOf('--foto') + 2] || 0);
-    await pg.evaluate((i) => preparar(i), i);
+    await pg.evaluate(([i, d]) => preparar(i, d), [i, cenas[i].dur]);
     const url = await pg.evaluate((t) => quadro(t, 'image/png'), t);
     const out = path.join(RAIZ, 'saida', `${video}_cena${foto}_${t}s.png`);
     fs.writeFileSync(out, Buffer.from(url.split(',')[1], 'base64')); console.log(out); await nav.close(); return;
@@ -45,7 +52,7 @@ const [W, H] = rapido ? [540, 960] : [1080, 1920];
     if (cenaSo && +cenaSo !== i + 1) continue;
     const c = cenas[i], n = Math.round(c.dur * FPS), nome = `${String(i + 1).padStart(2, '0')}-${c.nome}${rapido ? '_previa' : ''}.mp4`;
     const out = path.join(pasta, nome), t0 = Date.now();
-    await pg.evaluate((i) => preparar(i), i);
+    await pg.evaluate(([i, d]) => preparar(i, d), [i, c.dur]);
     const ff = spawn('ffmpeg', ['-y', '-hide_banner', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'mjpeg', '-i', '-',
       '-c:v', 'libx264', '-preset', rapido ? 'ultrafast' : 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', '-r', String(FPS), out], { stdio: ['pipe', 'inherit', 'inherit'] });
     for (let f = 0; f < n; f++) {

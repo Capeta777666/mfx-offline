@@ -11,3 +11,6 @@ saida/*.png
 assets/personagens/original/
 assets/personagens/recortes/*.png
 assets/cenas_oficiais/
+# modelos de voz (baixar: ver scripts/narrar.py) e áudios gerados
+assets/vozes/*.onnx
+assets/audio/narracao/*.wav

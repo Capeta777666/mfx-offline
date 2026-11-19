@@ -227,9 +227,14 @@ def achar_audio(pasta: Path, nome_roteiro: str, explicito: str | None, rotulo: s
     return None
 
 
-def achar_fonte() -> Path:
+def achar_fonte(preferencia: tuple[str, ...] = ()) -> Path:
+    """Fonte de assets/fontes/ (a 1ª cujo nome contém algum termo de `preferencia`, ex. ('900', 'black'))."""
     pasta = RAIZ / "assets" / "fontes"
     proprias = sorted(p for p in pasta.glob("*") if p.suffix.lower() in {".ttf", ".otf"})
+    for termo in preferencia:
+        for p in proprias:
+            if termo in p.name.lower():
+                return p
     if proprias:
         return proprias[0]
     candidatas = [
@@ -658,11 +663,12 @@ def main() -> None:
     destino = RAIZ / "saida" / (f"{nome}_previa.mp4" if args.rapido else f"{nome}.mp4")
     tmp = Path(tempfile.mkdtemp(prefix=f"radar_{nome}_", dir=RAIZ / "saida"))
     try:
-        fonte = achar_fonte()
+        fonte = achar_fonte(("900", "black", "extrabold"))            # títulos (TEXTO_TELA)
+        fonte_leg = achar_fonte(("700", "bold"))                       # legendas
         (tmp / "fontes").mkdir()
-        shutil.copy(fonte, tmp / "fontes" / fonte.name)
-        familia = ImageFont.truetype(str(fonte), 20).getname()[0]
-        negrito = "dejavu" in fonte.name.lower() or "arial" in fonte.name.lower()
+        shutil.copy(fonte_leg, tmp / "fontes" / fonte_leg.name)
+        familia, estilo = ImageFont.truetype(str(fonte_leg), 20).getname()
+        negrito = "bold" in estilo.lower() or "dejavu" in fonte_leg.name.lower() or "arial" in fonte_leg.name.lower()
 
         moldura = tmp / "moldura.png"
         render_moldura(moldura)

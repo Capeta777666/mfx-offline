@@ -105,10 +105,15 @@ Precisa de Node + Playwright (`npm i -D playwright && npx playwright install chr
 4. Exemplos prontos: `elenco-recorte` (figurinhas) e `elenco-cinema` (realista).
 Evitar imagens com armas em destaque: derruba alcance.
 
-## Narração
-Não há gerador de voz instalado neste ambiente. A narração vem de `assets/audio/narracao/<nome>.wav`
-(a voz do usuário, que também é o mais seguro pro Programa de Recompensas). Sem ela, `--so-trilha` gera a prévia.
-Para voz de IA local (Piper) seria preciso liberar PyPI + Hugging Face na rede do ambiente; só proponha se o usuário pedir.
+## Narração (voz de IA local, Piper PT-BR)
+1. `python scripts/narrar.py roteiros/<nome>.md [--voz faber|cadu|jeff] [--velocidade 1.05]`
+   gera `assets/audio/narracao/<nome>.wav` + `<nome>.json` (duração de cada cena) e reescreve os tempos do roteiro.
+2. `node animacao/render.js <nome>`: estica/encolhe cada cena pra durar o mesmo que a sua fala.
+3. `python animacao/trilha_synth.py assets/audio/trilha/<nome>.wav --duracao <total+2>`.
+4. `python scripts/montar_video.py roteiros/<nome>.md --sem-ajuste --legenda-margem 330`.
+Se a narração ficar abaixo de 60s, o script desacelera a voz. Prefira escrever FALAs mais longas e com conteúdo.
+Voz padrão: faber. A voz do usuário (gravada) continua sendo a opção mais segura pro Programa de Recompensas.
+Fontes: Montserrat em `assets/fontes` (900 = títulos, 700 = legendas, 600 = créditos).
 
 ## Regras de conteúdo (ao escrever ou revisar roteiro)
 - Gancho nos 3 primeiros segundos; total entre 60s e 180s

@@ -12,6 +12,7 @@ window.pronto = new Promise((ok, falha) => {
   document.body.appendChild(s);
 });
 window.cenas = () => VIDEO.cenas.map((c) => ({ nome: c.nome, dur: c.dur }));
-window.preparar = (i) => { const c = VIDEO.cenas[i]; aplicarPreset(R, c.preset); atual = c.montar(); return true; };
-window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => { const cam = atual.quadro(t); R.desenhar(atual.raiz, cam, t); return cv.toDataURL(fmt, qual); };
+let fator = 1;
+window.preparar = (i, dur) => { const c = VIDEO.cenas[i]; fator = dur ? c.dur / dur : 1; aplicarPreset(R, c.preset); atual = c.montar(); return true; };
+window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => { const cam = atual.quadro(t * fator); R.desenhar(atual.raiz, cam, t * fator); return cv.toDataURL(fmt, qual); };
 </script>
