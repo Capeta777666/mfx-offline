@@ -1,0 +1,22 @@
+<!doctype html><meta charset=utf-8>
+<body style="margin:0;background:#000">
+<canvas id=c width=1080 height=1920></canvas>
+<script src=../assets/personagens/recortes/meta.js></script>
+<script src=fx2d.js></script>
+<script>
+// player 2D: carrega videos2d/<v>.js; mesma interface do player 3D (cenas, preparar, quadro)
+const q = new URLSearchParams(location.search), cv = document.getElementById('c');
+const esc = +(q.get('w') || 1080) / 1080; cv.width = Math.round(1080 * esc); cv.height = Math.round(1920 * esc);
+const g = cv.getContext('2d'); setCtx(g); let atual = null;
+window.pronto = new Promise((ok, falha) => {
+  const s = document.createElement('script'); s.src = 'videos2d/' + q.get('v') + '.js'; s.onerror = () => falha('vídeo não encontrado');
+  s.onload = () => carregar(VIDEO.imagens).then(ok, falha); document.body.appendChild(s);
+});
+window.cenas = () => VIDEO.cenas.map((c) => ({ nome: c.nome, dur: c.dur }));
+window.preparar = (i) => { atual = VIDEO.cenas[i]; return true; };
+window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => {
+  g.setTransform(esc, 0, 0, esc, 0, 0); g.fillStyle = '#0B0218'; g.fillRect(0, 0, 1080, 1920);
+  g.save(); atual.desenhar(t); g.restore();
+  return cv.toDataURL(fmt, qual);
+};
+</script>

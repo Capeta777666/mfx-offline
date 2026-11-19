@@ -21,10 +21,12 @@ const rapido = args.includes('--rapido'), cenaSo = opc('--cena'), foto = opc('--
 const [W, H] = rapido ? [540, 960] : [1080, 1920];
 
 (async () => {
-  const nav = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
+  const nav = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--allow-file-access-from-files'] });
   const pg = await nav.newPage({ viewport: { width: W, height: H } });
   const erros = []; pg.on('pageerror', (e) => erros.push(e.message));
-  await pg.goto('file://' + path.join(__dirname, 'player.html') + `?v=${video}&w=${W}&h=${H}`);
+  // vídeos 2D (imagens reais/recortes) ficam em videos2d/; vídeos 3D (bonecos) em videos/
+  const player = fs.existsSync(path.join(__dirname, 'videos2d', video + '.js')) ? 'player2d.html' : 'player.html';
+  await pg.goto('file://' + path.join(__dirname, player) + `?v=${video}&w=${W}&h=${H}`);
   await pg.evaluate(() => window.pronto);
   if (erros.length) throw new Error(erros.join('\n'));
   const cenas = await pg.evaluate(() => window.cenas());

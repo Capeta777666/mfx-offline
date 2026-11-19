@@ -92,6 +92,24 @@ Fluxo para um vídeo animado novo:
 Personagem novo = nova entrada em `ELENCO` (pele, cabelo, barba, bigode, camisa/estampa, calça, tênis, acessórios).
 Precisa de Node + Playwright (`npm i -D playwright && npx playwright install chromium`).
 
+## Vídeos com imagens oficiais: estilos "recorte" e "cinema" (`animacao/videos2d/`)
+1. `python scripts/baixar_oficiais.py`: retratos e screenshots oficiais (wiki do GTA) para `assets/`.
+2. `python scripts/recortar.py`: recorta os personagens pelos contornos de `assets/personagens/contornos.json`
+   (polígono em coordenadas de uma versão de 500px de largura). Personagem novo = novo contorno.
+3. Cenas em `animacao/videos2d/<nome>.js` usando `fx2d.js`:
+   - `fundo` (Ken Burns; `blur`, `tinta`, `desce` para rosto abaixo do título)
+   - `fig` (figurinha com borda branca e entrada pop/esq/dir/baixo), `tag` (etiqueta)
+   - `parallax` (2.5D: recorte nítido sobre o original desfocado), `credito` (crédito estilo cinema)
+   - `flash`, `luz`, `vinheta`, `retícula`, `linhasVelocidade`, `ondas`, `equalizador`, `notas`, `tremor`, `metade`
+   O `render.js` usa o player 2D sozinho quando o vídeo está em `videos2d/`.
+4. Exemplos prontos: `elenco-recorte` (figurinhas) e `elenco-cinema` (realista).
+Evitar imagens com armas em destaque: derruba alcance.
+
+## Narração
+Não há gerador de voz instalado neste ambiente. A narração vem de `assets/audio/narracao/<nome>.wav`
+(a voz do usuário, que também é o mais seguro pro Programa de Recompensas). Sem ela, `--so-trilha` gera a prévia.
+Para voz de IA local (Piper) seria preciso liberar PyPI + Hugging Face na rede do ambiente; só proponha se o usuário pedir.
+
 ## Regras de conteúdo (ao escrever ou revisar roteiro)
 - Gancho nos 3 primeiros segundos; total entre 60s e 180s
 - Nunca vocabulário de violência explícita (matar, tráfico, homicídio, arma...) na fala, legenda ou texto de tela.

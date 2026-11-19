@@ -7,3 +7,7 @@ __pycache__/
 assets/clipes/*/*.mp4
 assets/audio/trilha/*.wav
 saida/*.png
+# imagens oficiais da Rockstar (baixar com scripts/baixar_oficiais.py; recortes com scripts/recortar.py)
+assets/personagens/original/
+assets/personagens/recortes/*.png
+assets/cenas_oficiais/
