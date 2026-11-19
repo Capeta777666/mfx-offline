@@ -1,0 +1,7 @@
+{
+  "name": "estudio-videos",
+  "private": true,
+  "description": "Motor de cenas (Chromium headless) do Estúdio de Vídeos",
+  "scripts": { "render": "node motor/render.js" },
+  "dependencies": { "playwright": "^1.48.0" }
+}

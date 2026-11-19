@@ -1,0 +1,32 @@
+<!doctype html><meta charset=utf-8>
+<body style="margin:0;background:#000">
+<style>
+@font-face { font-family: 'Montserrat'; font-weight: 600; src: url('../recursos/fontes/Montserrat-600.ttf'); }
+@font-face { font-family: 'Montserrat'; font-weight: 700; src: url('../recursos/fontes/Montserrat-700.ttf'); }
+@font-face { font-family: 'Montserrat'; font-weight: 900; src: url('../recursos/fontes/Montserrat-900.ttf'); }
+</style>
+<canvas id=c></canvas>
+<script src=fx2d.js></script>
+<script src=auto.js></script>
+<script>
+// player 2D: ?p=<slug>&esc=<0-1>. Carrega projetos/<slug>/build/roteiro.js (gerado por scripts/preparar.py)
+// e, se existir, projetos/<slug>/cenas.js (efeitos extras por bloco: window.CENAS_EXTRA = {3: (t, bloco) => {...}}).
+const q = new URLSearchParams(location.search), cv = document.getElementById('c'), base = '../projetos/' + q.get('p') + '/';
+const esc = +(q.get('esc') || 1); let g, cenas, atual;
+function script(src, opcional) { return new Promise((ok, falha) => { const s = document.createElement('script'); s.src = src; s.onload = ok;
+  s.onerror = () => (opcional ? ok() : falha('não carregou ' + src)); document.body.appendChild(s); }); }
+window.pronto = script(base + 'build/roteiro.js').then(() => script(base + 'cenas.js', true)).then(() => {
+  const R = window.ROTEIRO; window.META_RECORTES = R.recortes || {};
+  configurar(R.W, R.H, R.paleta);
+  cv.width = Math.round(R.W * esc); cv.height = Math.round(R.H * esc); g = cv.getContext('2d'); setCtx(g);
+  cenas = cenasDoRoteiro(R);
+  return Promise.all([carregar(R.imagens), document.fonts.load('900 40px Montserrat'), document.fonts.load('700 40px Montserrat'), document.fonts.load('600 40px Montserrat')]);
+});
+window.cenas = () => cenas.map((c) => ({ nome: c.nome, dur: c.dur }));
+window.preparar = (i) => { atual = cenas[i]; return true; };
+window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => {
+  g.setTransform(esc, 0, 0, esc, 0, 0); g.fillStyle = PAL.fundo || '#000'; g.fillRect(0, 0, W, H);
+  g.save(); atual.desenhar(t); g.restore();
+  return cv.toDataURL(fmt, qual);
+};
+</script>

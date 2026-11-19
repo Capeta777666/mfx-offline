@@ -1,0 +1,13 @@
+{
+  "nome": "Radar GTA6",
+  "handle": "@radar.gta6",
+  "idioma": "pt-BR",
+  "paleta": {"fundo": "#0B0218", "principal": "#FF2D95", "secundaria": "#00F0FF", "destaque": "#FF8C42", "escura": "#2A0A4A"},
+  "fontes": {"titulo": "Montserrat-900.ttf", "legenda": "Montserrat-700.ttf", "credito": "Montserrat-600.ttf"},
+  "titulo": {"estilo": "neon", "caixa_alta": true},
+  "voz": {"modelo": "pt_BR-faber-medium", "velocidade": 1.05},
+  "trilha": {"bpm": 104},
+  "tom": "Central de notícias do GTA 6 em português. Empolgado, rápido, linguagem de gamer brasileiro. Nunca vocabulário de violência explícita.",
+  "cta": "Salva esse vídeo e me conta nos comentários: o que você achou?",
+  "palavras_evitar": ["matar", "mata", "assassin", "homicíd", "tráfico", "traficante", "tiroteio", "atirar", "sangue", "arma", "armas", "droga", "drogas", "sequestr", "tortur"]
+}

@@ -1,0 +1,18 @@
+<!doctype html><meta charset=utf-8>
+<body style="margin:0;background:#000">
+<canvas id=c></canvas>
+<script src=estilos3d/motor.js></script><script src=estilos3d/personagens.js></script><script src=estilos3d/cenario.js></script>
+<script>
+// player 3D (estilo "bonecos"): ?p=<slug>&esc=<0-1>. Carrega projetos/<slug>/build/roteiro.js (durações e tamanho)
+// e projetos/<slug>/cenas3d.js (window.VIDEO = {cenas: [{dur, preset, montar() -> {raiz, quadro(t)}}]} — uma cena por bloco).
+const q = new URLSearchParams(location.search), cv = document.getElementById('c'), base = '../projetos/' + q.get('p') + '/';
+const esc = +(q.get('esc') || 1); let R3, atual, fator = 1;
+function script(src) { return new Promise((ok, falha) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => falha('não carregou ' + src); document.body.appendChild(s); }); }
+window.pronto = script(base + 'build/roteiro.js').then(() => script(base + 'cenas3d.js')).then(() => {
+  cv.width = Math.round(ROTEIRO.W * esc); cv.height = Math.round(ROTEIRO.H * esc); R3 = new Render(cv);
+});
+// a cena i dura o que o bloco i do roteiro dura (narração); a animação estica/encolhe proporcionalmente
+window.cenas = () => ROTEIRO.blocos.map((b, i) => ({ nome: 'bloco' + b.numero, dur: b.dur }));
+window.preparar = (i) => { const c = VIDEO.cenas[i]; fator = c.dur / ROTEIRO.blocos[i].dur; aplicarPreset(R3, c.preset); atual = c.montar(); return true; };
+window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => { const cam = atual.quadro(t * fator); R3.desenhar(atual.raiz, cam, t * fator); return cv.toDataURL(fmt, qual); };
+</script>

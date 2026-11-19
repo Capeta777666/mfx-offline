@@ -1,0 +1,12 @@
+{
+  "_sobre": "Formato de cada rede. 'seguro' = margens (px) onde a interface do app cobre o vídeo. Regras de monetização mudam: confira antes de prometer.",
+  "tiktok":      {"nome": "TikTok",            "largura": 1080, "altura": 1920, "fps": 30, "dur_min": 60, "dur_max": 180, "titulo_y": 0.19, "legenda_margem": 380, "seguro": {"topo": 160, "base": 380, "direita": 140},
+                  "nota": "Programa de Recompensas pede vídeos originais com 1 min ou mais."},
+  "reels":       {"nome": "Instagram Reels",   "largura": 1080, "altura": 1920, "fps": 30, "dur_min": 15, "dur_max": 180, "titulo_y": 0.2,  "legenda_margem": 420, "seguro": {"topo": 220, "base": 420, "direita": 140}},
+  "shorts":      {"nome": "YouTube Shorts",    "largura": 1080, "altura": 1920, "fps": 30, "dur_min": 15, "dur_max": 180, "titulo_y": 0.19, "legenda_margem": 400, "seguro": {"topo": 160, "base": 400, "direita": 140}},
+  "kwai":        {"nome": "Kwai",              "largura": 1080, "altura": 1920, "fps": 30, "dur_min": 15, "dur_max": 180, "titulo_y": 0.19, "legenda_margem": 400, "seguro": {"topo": 160, "base": 400, "direita": 140}},
+  "facebook":    {"nome": "Facebook Reels",    "largura": 1080, "altura": 1920, "fps": 30, "dur_min": 15, "dur_max": 90,  "titulo_y": 0.2,  "legenda_margem": 420, "seguro": {"topo": 200, "base": 420, "direita": 140}},
+  "youtube":     {"nome": "YouTube (16:9)",    "largura": 1920, "altura": 1080, "fps": 30, "dur_min": 60, "dur_max": 1200, "titulo_y": 0.16, "legenda_margem": 90, "seguro": {"topo": 60, "base": 80, "direita": 60}},
+  "feed":        {"nome": "Feed Instagram/Facebook/LinkedIn (4:5)", "largura": 1080, "altura": 1350, "fps": 30, "dur_min": 5, "dur_max": 600, "titulo_y": 0.14, "legenda_margem": 110, "seguro": {"topo": 60, "base": 100, "direita": 60}},
+  "quadrado":    {"nome": "Quadrado (1:1)",    "largura": 1080, "altura": 1080, "fps": 30, "dur_min": 5, "dur_max": 600, "titulo_y": 0.15, "legenda_margem": 90, "seguro": {"topo": 60, "base": 80, "direita": 60}}
+}

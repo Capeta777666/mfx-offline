@@ -1,0 +1,13 @@
+{
+  "nome": "Padrão",
+  "handle": "",
+  "idioma": "pt-BR",
+  "paleta": {"fundo": "#0E0E12", "principal": "#FFD23F", "secundaria": "#3BCEAC", "destaque": "#EE4266", "escura": "#1B1B24"},
+  "fontes": {"titulo": "Montserrat-900.ttf", "legenda": "Montserrat-700.ttf", "credito": "Montserrat-600.ttf"},
+  "titulo": {"estilo": "brilho", "caixa_alta": true},
+  "voz": {"modelo": "pt_BR-faber-medium", "velocidade": 1.05},
+  "trilha": {"bpm": 100},
+  "tom": "Direto, claro e animado. Frases curtas. Fala com o público como um amigo que entende do assunto.",
+  "cta": "Salva esse vídeo e me conta nos comentários o que você achou.",
+  "palavras_evitar": []
+}

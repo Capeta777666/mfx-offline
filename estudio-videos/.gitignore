@@ -1,0 +1,12 @@
+# gerados a cada produção
+projetos/*/build/
+projetos/*/saida/
+# imagens/clipes baixados (podem ter direitos de terceiros) — rebaixe com scripts/baixar_imagens.py
+projetos/*/assets/imagens/
+projetos/*/assets/clipes/
+projetos/*/assets/recortes/*.png
+# modelos de voz (baixados pelo setup.sh)
+recursos/vozes/*.onnx
+node_modules/
+__pycache__/
+*.pyc
