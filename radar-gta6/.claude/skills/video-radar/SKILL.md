@@ -67,6 +67,31 @@ FALA: Acabou a espera. O *GTA 6* destravou à meia-noite.
 `--rapido` · `--validar` · `--imagens <pasta>` · `--narracao <arq>` · `--trilha <arq>` ·
 `--sem-trilha` · `--volume-trilha 0.10` · `--sem-ajuste` · `--sem-grao` · `--manter-temp`
 
+## Vídeos animados com os bonecos low-poly (pasta `animacao/`)
+Estilo: bonecos facetados de cabeça grande, no padrão da imagem de referência do apresentador,
+em cenários neon de Vice City. Tudo é código (WebGL no Chromium headless), nada de IA generativa.
+
+| Arquivo | O que é |
+|---|---|
+| `animacao/motor.js` | motor 3D facetado (WebGL2), céu com sol retrô, chão com grade neon |
+| `animacao/personagens.js` | `ELENCO` (apresentador + personagens do GTA 6) e `ANIM` (vivo, falar, acenar, bracosCruzados, maosCintura, apontar, comemorar, dancar, andar, digitar, encolher, entradaPulo, surgir) |
+| `animacao/cenario.js` | presets de luz (`noite`, `rosa`, `ciano`, `laranja`, `mar`, `clube`) e objetos (palmeira, prédios, carro, mesa do Cal, barco, cais, clube) |
+| `animacao/videos/<nome>.js` | as cenas de um vídeo: duração, preset, quem aparece, poses e câmera por tempo |
+| `animacao/render.js` | renderiza cada cena em `assets/clipes/<nome>/NN-cena.mp4` |
+| `animacao/trilha_synth.py` | trilha synthwave original (sem direitos de terceiros) |
+
+Fluxo para um vídeo animado novo:
+1. Copiar `animacao/videos/elenco-gta6.js` para `animacao/videos/<nome>.js` e reescrever as cenas
+   (uma cena por bloco do roteiro, mesma duração).
+2. Conferir enquadramento com fotos: `node animacao/render.js <nome> --foto <cena> <segundo>` → `saida/*.png`.
+   O topo (até ~y 550 de 1920) é do TEXTO_TELA: cabeças devem ficar abaixo disso.
+3. Prévia rápida: `node animacao/render.js <nome> --rapido`; final: `node animacao/render.js <nome>`.
+4. Roteiro `roteiros/<nome>.md` com `IMAGEM: 01-cena.mp4` em cada bloco.
+5. Montar: `python scripts/montar_video.py roteiros/<nome>.md --legenda-margem 330`
+   (sem narração ainda: `--so-trilha` gera prévia com a trilha alta).
+Personagem novo = nova entrada em `ELENCO` (pele, cabelo, barba, bigode, camisa/estampa, calça, tênis, acessórios).
+Precisa de Node + Playwright (`npm i -D playwright && npx playwright install chromium`).
+
 ## Regras de conteúdo (ao escrever ou revisar roteiro)
 - Gancho nos 3 primeiros segundos; total entre 60s e 180s
 - Nunca vocabulário de violência explícita (matar, tráfico, homicídio, arma...) na fala, legenda ou texto de tela.

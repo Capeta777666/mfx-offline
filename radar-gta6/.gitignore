@@ -3,3 +3,7 @@ saida/*
 !saida/.gitkeep
 scripts/cenas.json
 __pycache__/
+# cenas animadas e trilha gerada (dá pra regerar com animacao/render.js e animacao/trilha_synth.py)
+assets/clipes/*/*.mp4
+assets/audio/trilha/*.wav
+saida/*.png

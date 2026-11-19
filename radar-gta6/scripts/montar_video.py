@@ -354,7 +354,7 @@ def render_texto_tela(texto: str, fonte_path: Path, destino: Path) -> None:
                 break
             tamanho -= 8
         alt_linha = int(tamanho * 1.12)
-        y0 = 440 - (alt_linha * len(linhas)) // 2  # centro ~23% da altura, abaixo da UI do TikTok
+        y0 = 370 - (alt_linha * len(linhas)) // 2  # centro ~19% da altura, logo abaixo da UI do TikTok
 
         def desenhar(camada, dx, dy, cor, contorno, cor_contorno):
             d = ImageDraw.Draw(camada)
@@ -432,7 +432,7 @@ def fatiar(palavras: list[tuple[str, int]], max_palavras: int = 6) -> list[list[
     return pedacos
 
 
-def gerar_legendas(blocos: list[dict], fonte_nome: str, negrito: bool, dest_ass: Path, dest_srt: Path) -> int:
+def gerar_legendas(blocos: list[dict], fonte_nome: str, negrito: bool, dest_ass: Path, dest_srt: Path, margem: int = 500) -> int:
     eventos = []
     for b in blocos:
         if not b["fala"]:
@@ -455,7 +455,7 @@ ScaledBorderAndShadow: yes
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Radar,{fonte_nome},80,&H00FFFFFF,&H00FFFFFF,{ass_cor(PRETO)},&H80000000,{-1 if negrito else 0},0,0,0,100,100,0,0,1,6,0,2,90,90,500,1
+Style: Radar,{fonte_nome},80,&H00FFFFFF,&H00FFFFFF,{ass_cor(PRETO)},&H80000000,{-1 if negrito else 0},0,0,0,100,100,0,0,1,6,0,2,90,90,{margem},1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -544,6 +544,9 @@ def mixar_e_finalizar(video_mudo: Path, narracao: Path | None, trilha: Path | No
     elif narracao:
         cmd += ["-i", str(narracao)]
         audio = f"[1:a]{fmt},apad=whole_dur={total:.3f},{fim}[a]"
+    elif trilha and cfg.get("so_trilha"):  # prévia sem narração: só a trilha, em volume alto
+        cmd += ["-stream_loop", "-1", "-i", str(trilha)]
+        audio = f"[1:a]{fmt},volume=0.8,{fim}[a]"
     else:  # sem narração = vídeo mudo pra dublar no CapCut
         audio = f"anullsrc=r=48000:cl=stereo,atrim=0:{total:.3f}[a]"
     filtro = f"[0:v]ass=legendas.ass:fontsdir=fontes[v];{audio}"
@@ -571,6 +574,10 @@ def main() -> None:
                     help="não esticar/encolher os blocos pra casar com a duração da narração")
     ap.add_argument("--sem-grao", action="store_true", help="desliga o grão de filme")
     ap.add_argument("--manter-temp", action="store_true", help="não apaga a pasta temporária")
+    ap.add_argument("--legenda-margem", type=int, default=500,
+                    help="distância da legenda até a base, em px de 1920 (padrão 500; 330 em vídeo com close de rosto)")
+    ap.add_argument("--so-trilha", action="store_true",
+                    help="sem narração: em vez de sair mudo, usa só a trilha em volume alto (prévia)")
     args = ap.parse_args()
 
     if not shutil.which("ffmpeg") or not shutil.which("ffprobe"):
@@ -607,7 +614,9 @@ def main() -> None:
             total = alvo
         elif dur_narr > total + 0.3:
             avisos.append(f"Narração ({dur_narr:.1f}s) é maior que o vídeo ({total:.1f}s) e vai ser cortada.")
-    if not narracao:
+    if not narracao and args.so_trilha and trilha:
+        avisos.append("Sem narração: prévia com SÓ A TRILHA (--so-trilha). Pra publicar, grave a narração.")
+    elif not narracao:
         avisos.append("Sem narração em assets/audio/narracao/ — o vídeo sai MUDO (sem trilha) pra você "
                       f"dublar no CapCut. Pra mixar automático, salve como assets/audio/narracao/{nome}.wav")
 
@@ -664,7 +673,7 @@ def main() -> None:
 
         cfg = {"w": w, "h": h, "moldura": moldura, "textos": textos, "grao": not args.sem_grao,
                "preset": "ultrafast" if args.rapido else "veryfast",
-               "maxrate": "3M" if args.rapido else "8M"}
+               "maxrate": "3M" if args.rapido else "8M", "so_trilha": args.so_trilha}
         print(f"  Renderizando {len(tomadas)} planos {w}x{h}...", flush=True)
         with ThreadPoolExecutor(max_workers=max(1, (os.cpu_count() or 2) // 2)) as ex:
             arquivos = list(ex.map(lambda t: render_tomada(t, tmp, cfg), tomadas))
@@ -676,7 +685,7 @@ def main() -> None:
                "-i", lista.name, "-c", "copy", video_mudo.name], cwd=tmp)
 
         srt = RAIZ / "saida" / f"{nome}.srt"
-        n_leg = gerar_legendas(blocos, familia, negrito, tmp / "legendas.ass", srt)
+        n_leg = gerar_legendas(blocos, familia, negrito, tmp / "legendas.ass", srt, args.legenda_margem)
         print(f"  Mixando áudio e queimando {n_leg} legendas...", flush=True)
         mixar_e_finalizar(video_mudo, narracao, trilha, total, args.volume_trilha, tmp, destino, cfg)
     finally:

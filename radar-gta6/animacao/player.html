@@ -1,0 +1,17 @@
+<!doctype html><meta charset=utf-8>
+<body style="margin:0;background:#000">
+<canvas id=c width=1080 height=1920></canvas>
+<script src=motor.js></script><script src=personagens.js></script><script src=cenario.js></script>
+<script>
+// player: carrega videos/<v>.js, monta uma cena e renderiza quadros sob demanda (usado pelo render.js)
+const q = new URLSearchParams(location.search), cv = document.getElementById('c');
+cv.width = +(q.get('w') || 1080); cv.height = +(q.get('h') || 1920);
+const R = new Render(cv); let atual = null;
+window.pronto = new Promise((ok, falha) => {
+  const s = document.createElement('script'); s.src = 'videos/' + q.get('v') + '.js'; s.onload = ok; s.onerror = () => falha('vídeo não encontrado');
+  document.body.appendChild(s);
+});
+window.cenas = () => VIDEO.cenas.map((c) => ({ nome: c.nome, dur: c.dur }));
+window.preparar = (i) => { const c = VIDEO.cenas[i]; aplicarPreset(R, c.preset); atual = c.montar(); return true; };
+window.quadro = (t, fmt = 'image/jpeg', qual = 0.93) => { const cam = atual.quadro(t); R.desenhar(atual.raiz, cam, t); return cv.toDataURL(fmt, qual); };
+</script>
