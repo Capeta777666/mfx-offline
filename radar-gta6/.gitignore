@@ -1,0 +1,5 @@
+# vídeos renderizados e arquivos gerados a cada montagem
+saida/*
+!saida/.gitkeep
+scripts/cenas.json
+__pycache__/
